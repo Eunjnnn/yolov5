@@ -198,6 +198,10 @@ class LoadImages:
                 raise FileNotFoundError(f'{p} does not exist')
 
         images = [x for x in files if x.split('.')[-1].lower() in IMG_FORMATS]
+
+        #########################
+        #####   VIDEO CDOE  #####
+        #########################
         videos = [x for x in files if x.split('.')[-1].lower() in VID_FORMATS]
         ni, nv = len(images), len(videos)
 
@@ -208,6 +212,10 @@ class LoadImages:
         self.video_flag = [False] * ni + [True] * nv
         self.mode = 'image'
         self.auto = auto
+
+        #########################
+        #####   VIDEO CDOE  #####
+        #########################
         if any(videos):
             self.new_video(videos[0])  # new video
         else:
@@ -223,7 +231,13 @@ class LoadImages:
         if self.count == self.nf:
             raise StopIteration
         path = self.files[self.count]
+        
 
+
+
+        #########################
+        #####   VIDEO CDOE  #####
+        #########################
         if self.video_flag[self.count]:
             # Read video
             self.mode = 'video'
@@ -256,6 +270,10 @@ class LoadImages:
 
         return path, img, img0, self.cap, s
 
+
+    #########################
+    #####   VIDEO CDOE  #####
+    #########################
     def new_video(self, path):
         self.frame = 0
         self.cap = cv2.VideoCapture(path)
