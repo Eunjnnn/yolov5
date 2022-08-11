@@ -169,6 +169,7 @@ def run(
                         label = None if hide_labels else (names[c] if hide_conf else f'{names[c]} {conf:.2f}')
                         annotator.box_label(xyxy, label, color=colors(c, True))
                     if save_crop:
+                        LOGGER.debug('names?', names[c])
                         save_one_box(xyxy, imc, file=save_dir / 'crops' / names[c] / f'{p.stem}.jpg', BGR=True)
 
             # Stream results
@@ -188,12 +189,21 @@ def run(
                 else:  # 'video' or 'stream'
                     if vid_path[i] != save_path:  # new video
                         vid_path[i] = save_path
+                        LOGGER.info('it is video or stream')
                         if isinstance(vid_writer[i], cv2.VideoWriter):
                             vid_writer[i].release()  # release previous video writer
+                        
+                        
+                        #########################
+                        #####   Video Code  #####
+                        #########################
                         if vid_cap:  # video
-                            fps = vid_cap.get(cv2.CAP_PROP_FPS)
-                            w = int(vid_cap.get(cv2.CAP_PROP_FRAME_WIDTH))
-                            h = int(vid_cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+                            LOGGER.info('it is video')
+                            fps = vid_cap.get(cv2.CAP_PROP_FPS)                 # 프레임 초당 프레임 수
+                            w = int(vid_cap.get(cv2.CAP_PROP_FRAME_WIDTH))      # 프레임 폭
+                            h = int(vid_cap.get(cv2.CAP_PROP_FRAME_HEIGHT))     # 프레임 높이
+                            LOGGER.info(fps, w, h)
+                        
                         else:  # stream
                             fps, w, h = 30, im0.shape[1], im0.shape[0]
                         save_path = str(Path(save_path).with_suffix('.mp4'))  # force *.mp4 suffix on results videos

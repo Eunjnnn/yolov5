@@ -640,7 +640,9 @@ class AutoShape(nn.Module):
             t.append(time_sync())
             return Detections(imgs, y, files, t, self.names, x.shape)
 
-
+#########################
+#####   Detection   #####
+#########################
 class Detections:
     # YOLOv5 detections class for inference results
     def __init__(self, imgs, pred, files, times=(0, 0, 0, 0), names=None, shape=None):
@@ -672,7 +674,8 @@ class Detections:
                     annotator = Annotator(im, example=str(self.names))
                     for *box, conf, cls in reversed(pred):  # xyxy, confidence, class
                         label = f'{self.names[int(cls)]} {conf:.2f}'
-                        if crop:
+                        if crop and self.names[int(cls)] == 'cat':
+                            LOGGER.info('hello im crop (in common.py)')
                             file = save_dir / 'crops' / self.names[int(cls)] / self.files[i] if save else None
                             crops.append({
                                 'box': box,
